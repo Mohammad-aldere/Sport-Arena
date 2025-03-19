@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 
 use App\Domains\User\Services\UserService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 use Laravel\Sanctum\PersonalAccessToken;
 
 class AuthController extends Controller
@@ -20,15 +19,12 @@ class AuthController extends Controller
 
     public function register(Request $request)
     {
-        $validator = Validator::make($request->all(), [
+        $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8|confirmed',
         ]);
 
-        if ($validator->fails()) {
-            return response()->json($validator->errors(), 400);
-        }
 
         try {
             $user = $this->userService->register($request->all());
@@ -45,14 +41,12 @@ class AuthController extends Controller
   
     public function login(Request $request)
     {
-        $validator = Validator::make($request->all(), [
+        $request->validate([
             'email' => 'required|string|email|max:255',
             'password' => 'required|string|min:8',
         ]);
 
-        if ($validator->fails()) {
-            return response()->json($validator->errors(), 400);
-        }
+
 
         $user = $this->userService->login($request->email, $request->password);
 

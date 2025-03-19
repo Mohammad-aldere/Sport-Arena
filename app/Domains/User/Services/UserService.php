@@ -5,7 +5,6 @@ namespace App\Domains\User\Services;
 use App\Domains\User\Repositories\UserRepositoryInterface;
 use App\Domains\User\Entities\User;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
 class UserService
@@ -18,19 +17,12 @@ class UserService
     }
 
 
-    public function register(array $data)
-    {
-        try {
-            return DB::transaction(function () use ($data) {
-
-                $user = $this->userRepository->create($data);
-
-                return $user;
-            });
-        } catch (\Exception $e) {
-            throw new \Exception('An error occurred during user registration: ' . $e->getMessage());
-        }
+    public function register(array $data): User
+    {   
+        $data['role'] = 'admin';
+        return $this->userRepository->create($data);
     }
+
 
 
     public function login(string $email, string $password): ?User
