@@ -7,7 +7,7 @@ use App\Domains\Arenas\Repositories\TimeSlotRepositoryInterface;
 use Exception;
 use Illuminate\Support\Facades\DB;
 use App\Jobs\ReleaseUnconfirmedBooking;
-
+// use Illuminate\Support\Facades\Bus;
 
 class BookingService
 {
